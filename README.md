@@ -137,9 +137,10 @@ Se implementó un RAG de tipo **Dense Retrieval**, utilizando:
 
 ## 👨‍💻 Autor
 
-Proyecto desarrollado como Evaluación Parcial N°1  
-Carrera: Técnico Analista Programador  
-Instituto Profesional DUOC UC
+Nombre: Ignacio Andrés Acevedo Espinoza
+Carrera: Técnico Analista Programador
+Institución: DUOC UC Plaza Oeste
+Asignatura: ISY0101
 
 ## 🔐 Configuración
 
