@@ -1,73 +1,56 @@
 # 🎓 Asistente Virtual DUOC UC Plaza Oeste  
-Arquitectura RAG con Agentes de IA y GitHub Models  
 
-## 📌 Descripción del Proyecto
+## Descripción del Proyecto
 
-Este proyecto implementa un asistente virtual inteligente para la sede DUOC UC Plaza Oeste, diseñado para responder consultas estudiantiles utilizando exclusivamente documentación institucional oficial.
+El siguiente proyecto implementa un asistente virtual inteligente para DUOC UC Plaza Oeste, diseñado para responder consultas academicas utilizando exclusivamente documentación institucional oficial.
 
-El sistema está basado en una arquitectura **Retrieval-Augmented Generation (RAG)** con recuperación semántica mediante embeddings y base vectorial FAISS.
+El sistema está basado en una arquitectura **Retrieval-Augmented Generation (RAG)** y base vectorial **FAISS**.
 
 ---
 
-## 🎯 Objetivo General
+## Objetivo General
 
 Diseñar e implementar un asistente virtual basado en IA que permita:
 
-- Reducir consultas repetitivas al personal administrativo.
-- Entregar respuestas basadas en documentación oficial.
-- Disminuir tiempos de respuesta a menos de 5 segundos.
+1.	Reducir en al menos un 40% las consultas repetitivas atendidas por personal administrativo.
+2.	Entregar respuestas basadas en documentación oficial.
+3.	Disminuir tiempos de respuesta a menos de 5 segundos.
+
 
 ---
 
-## 🧠 Arquitectura Implementada
+## Arquitectura Implementada
 
 El sistema utiliza:
 
-- **LLM:** GPT-4o-mini (vía GitHub Models API)
-- **Embeddings:** text-embedding-3-small
-- **Vector Store:** FAISS
-- **Text Splitter:** RecursiveCharacterTextSplitter
-- **Framework:** LangChain
+- **LLM:** GPT-4o-mini (vía GitHub Models API).
+- **Embeddings:** text-embedding-3-small.
+- **Vector Store:** FAISS.
+- **Framework:** LangChain.
 
 ### Flujo del Sistema
 
 1. Carga de documentos PDF institucionales.
-2. División en fragmentos (chunks).
+2. División en fragmentos o chunks.
 3. Generación de embeddings (Dense Retrieval).
 4. Almacenamiento en base vectorial FAISS.
-5. Recuperación de los 3 fragmentos más relevantes.
+5. Recuperación de fragmentos más relevantes.
 6. Construcción de contexto.
 7. Generación de respuesta con LLM usando prompt controlado.
 
 ---
 
-## 📂 Estructura del Proyecto
-duoc-rag-assistant/
-│
-├── EP1_RAG_DUOC.ipynb
-├── README.md
-├── requirements.txt
-├── data/
-│ ├── admisiones_2026.pdf
-│ ├── becas.pdf
-│ ├── calendario_2026.pdf
-│ ├── faq.pdf
-│ ├── reglamento_academico.pdf
-
-
----
-
-## 📄 Documentos Utilizados
+## Documentos Utilizados
 
 - Reglamento Académico
 - Calendario Académico
-- Reglamento de Becas
+- Infromación sobre Becas
 - Requisitos de Admisión
 - Preguntas Frecuentes Institucionales
 
 ---
 
-## 🔒 Control de Seguridad
+## Control de Seguridad
 
 El sistema:
 
@@ -78,10 +61,10 @@ El sistema:
 
 ---
 
-## ⚙️ Instalación y Ejecución
+## Instalación y Ejecución
 
 ### 1️⃣ Clonar repositorio
-git clone <URL_DEL_REPOSITORIO>
+git clone <https://github.com/Chanbeador/duoc-rag-assistant.git>
 
 ### 2️⃣ Instalar dependencias
 pip install -r requirements.txt
@@ -104,7 +87,7 @@ Y ejecutar las celdas en orden.
 
 ---
 
-## 🧪 Ejemplo de Uso
+## Ejemplo de Uso
 
 Pregunta:
 ¿Cómo puedo realizar mi matrícula?
@@ -120,29 +103,27 @@ Respuesta:
 
 Se implementó un RAG de tipo **Dense Retrieval**, utilizando:
 
-- Embeddings numéricos
-- Búsqueda por similitud coseno
-- Base vectorial FAISS
+- Embeddings numéricos.
+- Búsqueda por similitud coseno.
+- Base vectorial FAISS.
 
 ---
 
-## 🚀 Posibles Mejoras Futuras
+## Posibles Mejoras Futuras
 
-- Implementación de múltiples agentes (Académico / Infraestructura)
-- Integración con sitio web institucional
-- Interfaz web (Streamlit o FastAPI)
-- Persistencia automática de índice FAISS
+- Implementación de múltiples agentes, academico y para infraestrcutura.
+- Integración con sitio web institucional.
+- Interfaz web (Streamlit o FastAPI).
 
 ---
 
 ## 👨‍💻 Autor
 
-Nombre: Ignacio Andrés Acevedo Espinoza
-Carrera: Técnico Analista Programador
-Institución: DUOC UC Plaza Oeste
-Asignatura: ISY0101
+- Nombre: Ignacio Andrés Acevedo Espinoza
+- Carrera: Técnico Analista Programador
+- Institución: DUOC UC Plaza Oeste
 
-## 🔐 Configuración
+## Configuración
 
 Antes de ejecutar el proyecto, crear un archivo `.env` en la raíz del proyecto con:
 
