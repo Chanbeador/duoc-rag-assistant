@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 import os
+import json
 
 from langchain_openai import ChatOpenAI
 from langchain_openai import OpenAIEmbeddings
@@ -22,6 +23,17 @@ vectorstore = FAISS.load_local(
     embeddings,
     allow_dangerous_deserialization=True
 )
+
+# Cargar memoria
+try:
+    with open("memory.json", "r", encoding="utf-8") as f:
+        chat_history = json.load(f)
+except FileNotFoundError:
+    chat_history = []
+    
+def guardar_memoria(historial):
+    with open("memory.json", "w", encoding="utf-8") as f:
+        json.dump(historial, f, ensure_ascii=False, indent=2)
 
 # Prompt institucional
 template = """
@@ -71,9 +83,6 @@ llm = ChatOpenAI(
     openai_api_base=os.getenv("GITHUB_BASE_URL")
 )
 
-# Memoria conversacional
-chat_history = []
-
 def decidir_accion(docs):
 
     if len(docs) == 0:
@@ -82,9 +91,8 @@ def decidir_accion(docs):
     return "RESPONDER"
 
 def rag_answer(question):
-    """
-    Recupera información desde FAISS y genera una respuesta.
-    """
+
+    global chat_history
 
     # Buscar documentos relevantes
     docs = vectorstore.similarity_search(
@@ -96,7 +104,6 @@ def rag_answer(question):
     accion = decidir_accion(docs)
 
     if accion == "SIN_INFORMACION":
-
         return (
             "No dispongo de información oficial "
             "para responder esta consulta. "
@@ -104,30 +111,33 @@ def rag_answer(question):
             "el sitio institucional de DUOC UC o contactar "
             "a tu Dirección de Carrera."
         )
-    
+
     history_text = "\n".join([
-    f"Usuario: {item['question']}\nAsistente: {item['answer']}"
-    for item in chat_history[-5:]
+        f"Usuario: {item['question']}\nAsistente: {item['answer']}"
+        for item in chat_history[-5:]
     ])
 
-    # Construir contexto
     context = "\n\n".join(
         [doc.page_content for doc in docs]
     )
 
-    # Crear prompt final
     final_prompt = prompt.format(
-    history=history_text,
-    context=context,
-    question=question
+        history=history_text,
+        context=context,
+        question=question
     )
 
-    # Consultar modelo
     response = llm.invoke(final_prompt)
 
+    # Guardar memoria
     chat_history.append({
         "question": question,
         "answer": response.content
     })
+
+    # Limitar historial SIN reasignar la lista completa
+    del chat_history[:-20]
+
+    guardar_memoria(chat_history)
 
     return response.content
