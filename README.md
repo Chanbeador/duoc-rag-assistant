@@ -2,7 +2,7 @@
 
 ## Descripción del Proyecto
 
-El siguiente proyecto implementa un asistente virtual inteligente para DUOC UC Plaza Oeste, diseñado para responder consultas academicas utilizando exclusivamente documentación institucional oficial.
+El siguiente proyecto implementa un asistente virtual inteligente para DUOC UC Plaza Oeste, diseñado para responder consultas academicas utilizando exclusivamente documentación institucional oficial, actualmente cuenta con memoria para realizar respuestas mas elaboradas, al igual que generar correos a petición de los usuarios.
 
 El sistema está basado en una arquitectura **Retrieval-Augmented Generation (RAG)** y base vectorial **FAISS**.
 
@@ -66,20 +66,25 @@ El sistema:
 ## Instalación y Ejecución
 
 ### 1️⃣ Clonar repositorio
+Una vez creada una carpeta en VS Code, ingrese a la terminal y ejecute: 
+
 git clone <https://github.com/Chanbeador/duoc-rag-assistant.git>
 
 ### 2️⃣ Instalar dependencias
+Dentro de la terminal, utilize el siguiente comando:
+
 pip install -r requirements.txt
 
 
 ### 3️⃣ Configurar variables de entorno
+En el codigo se vera la carpeta ".env", ahi deberia cambiar el token de github, con el propio:
 
-Configurar en el notebook o entorno:
 OPENAI_API_KEY=TU_TOKEN_GITHUB
 OPENAI_BASE_URL=https://models.inference.ai.azure.com
 
 
 ### 4️⃣ Ejecutar aplicación
+En la misma terminal, utilizar el siguiente comando y a probar!
 
 streamlit run app.py
 
