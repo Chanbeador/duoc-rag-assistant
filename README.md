@@ -15,6 +15,7 @@ Diseñar e implementar un asistente virtual basado en IA que permita:
 1.	Reducir en al menos un 40% las consultas repetitivas atendidas por personal administrativo.
 2.	Entregar respuestas basadas en documentación oficial.
 3.	Disminuir tiempos de respuesta a menos de 5 segundos.
+4.  Redacción de correos formales respecto solicitudes.
 
 
 ---
@@ -27,6 +28,7 @@ El sistema utiliza:
 - **Embeddings:** text-embedding-3-small.
 - **Vector Store:** FAISS.
 - **Framework:** LangChain.
+- **Agent Engine**
 
 ### Flujo del Sistema
 
@@ -77,25 +79,23 @@ OPENAI_API_KEY=TU_TOKEN_GITHUB
 OPENAI_BASE_URL=https://models.inference.ai.azure.com
 
 
-### 4️⃣ Ejecutar notebook
+### 4️⃣ Ejecutar aplicación
 
-Abrir:
-EP1_RAG_DUOC.ipynb
-
-
-Y ejecutar las celdas en orden.
+streamlit run app.py
 
 ---
 
 ## Ejemplo de Uso
 
-Pregunta:
-¿Cómo puedo realizar mi matrícula?
-
-
-Respuesta:
-
-> El proceso de matrícula se realiza a través del portal institucional en línea...
+1.  El usuario ingresa una consulta.
+2.  El agente analiza la intención de la solicitud.
+3.  Se selecciona automáticamente la herramienta adecuada:
+    *   Consulta RAG
+    *   Redacción de correos
+    *   Memoria conversacional
+4.  Se ejecuta la herramienta seleccionada.
+5.  La respuesta se almacena en memoria.
+6.  Se entrega el resultado al usuario.
 
 ---
 
@@ -106,14 +106,6 @@ Se implementó un RAG de tipo **Dense Retrieval**, utilizando:
 - Embeddings numéricos.
 - Búsqueda por similitud coseno.
 - Base vectorial FAISS.
-
----
-
-## Posibles Mejoras Futuras
-
-- Implementación de múltiples agentes, academico y para infraestrcutura.
-- Integración con sitio web institucional.
-- Interfaz web (Streamlit o FastAPI).
 
 ---
 
