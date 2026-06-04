@@ -42,6 +42,9 @@ Si la información solicitada no aparece en el contexto:
 
 Mantén siempre un lenguaje formal, cordial y orientado a ayudar.
 
+Historial de conversación:
+{history}
+
 Contexto:
 {context}
 
@@ -53,7 +56,11 @@ Respuesta:
 
 prompt = PromptTemplate(
     template=template,
-    input_variables=["context", "question"]
+    input_variables=[
+        "history",
+        "context",
+        "question"
+    ]
 )
 
 # Modelo LLM
@@ -64,6 +71,15 @@ llm = ChatOpenAI(
     openai_api_base=os.getenv("GITHUB_BASE_URL")
 )
 
+# Memoria conversacional
+chat_history = []
+
+def decidir_accion(docs):
+
+    if len(docs) == 0:
+        return "SIN_INFORMACION"
+
+    return "RESPONDER"
 
 def rag_answer(question):
     """
@@ -76,6 +92,24 @@ def rag_answer(question):
         k=3
     )
 
+    # Decidir acción
+    accion = decidir_accion(docs)
+
+    if accion == "SIN_INFORMACION":
+
+        return (
+            "No dispongo de información oficial "
+            "para responder esta consulta. "
+            "Te recomiendo revisar el Portal del Alumno, "
+            "el sitio institucional de DUOC UC o contactar "
+            "a tu Dirección de Carrera."
+        )
+    
+    history_text = "\n".join([
+    f"Usuario: {item['question']}\nAsistente: {item['answer']}"
+    for item in chat_history[-5:]
+    ])
+
     # Construir contexto
     context = "\n\n".join(
         [doc.page_content for doc in docs]
@@ -83,11 +117,17 @@ def rag_answer(question):
 
     # Crear prompt final
     final_prompt = prompt.format(
-        context=context,
-        question=question
+    history=history_text,
+    context=context,
+    question=question
     )
 
     # Consultar modelo
     response = llm.invoke(final_prompt)
+
+    chat_history.append({
+        "question": question,
+        "answer": response.content
+    })
 
     return response.content
