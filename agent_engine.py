@@ -111,7 +111,9 @@ def agent_answer(question):
         tool,
         latency,
         success,
-        error
+        response_valid=len(response) > 0,
+        response_length=len(response),
+        error=error
     )
 
 

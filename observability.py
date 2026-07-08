@@ -11,6 +11,8 @@ def save_log(
     tool,
     latency,
     success,
+    response_valid=True,
+    response_length=0,
     error=None
 ):
     """
@@ -25,6 +27,9 @@ def save_log(
         "tool": tool,
         "latency": round(latency, 3),
         "success": success,
+        "response_valid": response_valid,
+        "response_length": response_length,
+
         "error": error
     }
 
@@ -84,6 +89,8 @@ def calculate_metrics():
             "total_requests": 0,
             "average_latency": 0,
             "success_rate": 0,
+            "consistency_rate": 0,
+            "average_response_length": 0,
             "tools": {}
         }
 
@@ -107,6 +114,23 @@ def calculate_metrics():
     success_rate = (
         successful_requests / total_requests
     ) * 100
+    
+    valid_responses = sum(
+        1
+        for log in logs
+        if log["response_valid"]
+    )
+
+
+    consistency_rate = (
+        valid_responses / total_requests
+    ) * 100
+
+
+    average_response_length = sum(
+        log["response_length"]
+        for log in logs
+    ) / total_requests
 
 
     tools = {}
@@ -123,13 +147,26 @@ def calculate_metrics():
 
     return {
         "total_requests": total_requests,
+
         "average_latency": round(
             average_latency,
             3
         ),
+
         "success_rate": round(
             success_rate,
             2
         ),
+
+        "consistency_rate": round(
+            consistency_rate,
+            2
+        ),
+
+        "average_response_length": round(
+            average_response_length,
+            2
+        ),
+
         "tools": tools
     }
