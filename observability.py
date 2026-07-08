@@ -74,3 +74,62 @@ def load_logs():
     ) as file:
 
         return json.load(file)
+    
+def calculate_metrics():
+
+    logs = load_logs()
+
+    if len(logs) == 0:
+        return {
+            "total_requests": 0,
+            "average_latency": 0,
+            "success_rate": 0,
+            "tools": {}
+        }
+
+
+    total_requests = len(logs)
+
+
+    average_latency = sum(
+        log["latency"]
+        for log in logs
+    ) / total_requests
+
+
+    successful_requests = sum(
+        1
+        for log in logs
+        if log["success"]
+    )
+
+
+    success_rate = (
+        successful_requests / total_requests
+    ) * 100
+
+
+    tools = {}
+
+    for log in logs:
+
+        tool = log["tool"]
+
+        if tool in tools:
+            tools[tool] += 1
+        else:
+            tools[tool] = 1
+
+
+    return {
+        "total_requests": total_requests,
+        "average_latency": round(
+            average_latency,
+            3
+        ),
+        "success_rate": round(
+            success_rate,
+            2
+        ),
+        "tools": tools
+    }
