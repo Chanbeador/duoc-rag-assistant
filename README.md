@@ -2,7 +2,7 @@
 
 ## Descripción del Proyecto
 
-El siguiente proyecto implementa un asistente virtual inteligente para DUOC UC Plaza Oeste, diseñado para responder consultas academicas utilizando exclusivamente documentación institucional oficial, actualmente cuenta con memoria para realizar respuestas mas elaboradas, al igual que generar correos a petición de los usuarios.
+El siguiente proyecto implementa un asistente virtual inteligente para DUOC UC Plaza Oeste, diseñado para responder consultas académicas utilizando exclusivamente documentación institucional oficial, actualmente cuenta con memoria para realizar respuestas más elaboradas, al igual que generar correos a petición de los usuarios.
 
 El sistema está basado en una arquitectura **Retrieval-Augmented Generation (RAG)** y base vectorial **FAISS**.
 
@@ -15,7 +15,7 @@ Diseñar e implementar un asistente virtual basado en IA que permita:
 1.	Reducir en al menos un 40% las consultas repetitivas atendidas por personal administrativo.
 2.	Entregar respuestas basadas en documentación oficial.
 3.	Disminuir tiempos de respuesta a menos de 5 segundos.
-4.  Redacción de correos formales respecto solicitudes.
+4.  Redacción de correos formales respecto a solicitudes de los usuarios.
 
 
 ---
@@ -46,7 +46,7 @@ El sistema utiliza:
 
 - Reglamento Académico
 - Calendario Académico
-- Infromación sobre Becas
+- Información sobre Becas
 - Requisitos de Admisión
 - Preguntas Frecuentes Institucionales
 
@@ -56,7 +56,8 @@ El sistema utiliza:
 
 El sistema:
 
-- No almacena información personal.
+- No almacena información personal permanente del usuario.
+- La memoria conversacional se mantiene mediante el archivo local `memory.json` para conservar contexto durante la interacción.
 - Responde únicamente con información contenida en el contexto recuperado.
 - Evita generar información no verificada.
 - Utiliza temperatura ≤ 0.3 para reducir alucinaciones.
@@ -65,28 +66,60 @@ El sistema:
 
 ## Instalación y Ejecución
 
-### 1️⃣ Clonar repositorio
-Una vez creada una carpeta en VS Code, ingrese a la terminal y ejecute: 
+### 1 Clonar repositorio
+git clone https://github.com/Chanbeador/duoc-rag-assistant.git
 
-git clone <https://github.com/Chanbeador/duoc-rag-assistant.git>
 
-### 2️⃣ Instalar dependencias
-Dentro de la terminal, utilize el siguiente comando:
+cd duoc-rag-assistant
 
+### 2 Crear entorno virtual
+```bash
+python -m venv .venv
+```
+
+### 3 Activar entorno virtual
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+### 4 Instalar dependencias
+```bash
 pip install -r requirements.txt
+```
 
+### 5 Configuración de variables de entorno
+El proyecto utiliza variables de entorno para autenticar el acceso a GitHub Models.
 
-### 3️⃣ Configurar variables de entorno
-En el codigo se vera la carpeta ".env", ahi deberia cambiar el token de github, con el propio:
+Antes de ejecutar la aplicación, se debe crear un archivo llamado `.env` en la raíz del proyecto.
 
-OPENAI_API_KEY=TU_TOKEN_GITHUB
-OPENAI_BASE_URL=https://models.inference.ai.azure.com
+El archivo debe contener:
 
+```env
+GITHUB_TOKEN=TU_TOKEN_GITHUB
+GITHUB_BASE_URL=https://models.github.ai/inference
+```
 
-### 4️⃣ Ejecutar aplicación
-En la misma terminal, utilizar el siguiente comando y a probar!
+Por seguridad, el archivo `.env` no debe ser subido al repositorio, ya que contiene credenciales privadas.
 
+El proyecto incluye un archivo `.env.example` como plantilla de configuración, el cual permite conocer la estructura necesaria de las variables de entorno sin exponer información sensible.
+
+Para utilizarlo:
+
+1. Copiar el archivo `.env.example`.
+2. Renombrar la copia como `.env`.
+3. Reemplazar `TU_TOKEN_GITHUB` por un Personal Access Token válido de GitHub con acceso a GitHub Models.
+
+Ejemplo:
+
+```env
+GITHUB_TOKEN=TU_TOKEN_GITHUB
+GITHUB_BASE_URL=https://models.github.ai/inference
+```
+
+### 6 Ejecutar aplicación
+```bash
 streamlit run app.py
+```
 
 ---
 
@@ -117,12 +150,7 @@ Se implementó un RAG de tipo **Dense Retrieval**, utilizando:
 ## 👨‍💻 Autor
 
 - Nombre: Ignacio Andrés Acevedo Espinoza
+
 - Carrera: Técnico Analista Programador
+
 - Institución: DUOC UC Plaza Oeste
-
-## Configuración
-
-Antes de ejecutar el proyecto, crear un archivo `.env` en la raíz del proyecto con:
-
-GITHUB_TOKEN=tu_token_aqui
-GITHUB_BASE_URL=https://models.inference.ai.azure.com
