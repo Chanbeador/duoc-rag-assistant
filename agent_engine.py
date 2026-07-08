@@ -1,5 +1,7 @@
 from rag_engine import rag_answer
 from rag_engine import llm
+from observability import save_log
+import time
 
 def show_memory():
 
@@ -69,19 +71,49 @@ def choose_tool(question):
 
 def agent_answer(question):
 
+    start_time = time.time()
+
     tool = choose_tool(question)
 
-    if tool == "memory":
+    success = True
+    error = None
 
-        response = show_memory()
+    try:
 
-    elif tool == "email":
+        if tool == "memory":
 
-        response = write_email(question)
+            response = show_memory()
 
-    else:
+        elif tool == "email":
 
-        response = rag_answer(question)
+            response = write_email(question)
+
+        else:
+
+            response = rag_answer(question)
+
+
+    except Exception as e:
+
+        response = (
+            "Ocurrió un error al procesar la solicitud."
+        )
+
+        success = False
+        error = str(e)
+
+
+    latency = time.time() - start_time
+
+
+    save_log(
+        question,
+        tool,
+        latency,
+        success,
+        error
+    )
+
 
     conversation_history.append(
         {
@@ -89,5 +121,6 @@ def agent_answer(question):
             "response": response
         }
     )
+
 
     return response
