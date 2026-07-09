@@ -121,6 +121,10 @@ GITHUB_BASE_URL=https://models.github.ai/inference
 streamlit run app.py
 ```
 
+```bash
+streamlit run dashboard.py
+```
+
 ---
 
 ## Ejemplo de Uso
